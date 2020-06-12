@@ -1,38 +1,39 @@
 // Initialize express
 const express = require('express')
 const app = express()
-const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
-
-// Use Body Parser
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-// Add after body parser initialization!
-app.use(expressValidator());
-
+const path = require('path')
 // require handlebars
-const exphbs = require('express-handlebars');
+const exphbs = require('express-handlebars').create({
+  layoutsDir: path.join(__dirname, "/views/layouts"),
+  defaultLayout: 'main'
+});
+
+// Database
+const database = require('./data/reddit-db')
+
+// Middleware
+const bodyParser = require('body-parser')
+const expressValidator = require('express-validator')
+
+// Constrollers
+const posts = require('./controllers/posts.js')
+
+// Models
+const Post = require('./models/post')
+
+// Middleware initialization, Use Body Parser
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+app.use(expressValidator())
+
 
 // Use "main" as our default layout
-app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.engine('handlebars', exphbs.engine);
 // Use handlebars to render
 app.set('view engine', 'handlebars');
 
-// controllers 
-require('./controllers/posts.js')(app);
-// Set db
-require('./data/reddit-db');
-
-// Render the "home" layout for the main page and send the following msg
-app.get('/', (_, res) => {
-    res.render('posts-index', {});
-});
-
-// NEW
-app.get('/posts/new', (req, res) => {
-  res.render('posts-new', {});
-})
+// Access controllers & database
+app.use(posts)
 
 // Choose a port to listen on
 const port = process.env.PORT || 3000;
