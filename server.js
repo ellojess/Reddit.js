@@ -21,16 +21,16 @@ const posts = require('./controllers/posts.js')
 // Models
 const Post = require('./models/post')
 
+// Use "main" as our default layout
+app.engine('handlebars', exphbs.engine);
+// Use handlebars to render
+app.set('view engine', 'handlebars');
+
 // Middleware initialization, Use Body Parser
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(expressValidator())
 
-
-// Use "main" as our default layout
-app.engine('handlebars', exphbs.engine);
-// Use handlebars to render
-app.set('view engine', 'handlebars');
 
 // Access controllers & database
 app.use(posts)
