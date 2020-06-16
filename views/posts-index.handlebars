@@ -2,8 +2,13 @@
     <div class="col-sm-8 col-sm-offset-2">
         {{#each posts}}
             <li class="list-groups-item">
-                <div class="lead">{{this.title}}</div>
-                    <a href="{{this.url}}" target="_blank">{{this.url}}</a>
+                <div class="lead">
+                    <a href="/posts/{{this._id}}">{{this.title}}</a>
+                </div>
+                <a href="{{this.url}}" target="_blank">{{this.url}}</a>
+                <div class="text-right">
+                    <a href="/n/{{this.subreddit}}">{{this.subreddit}}</a>
+                </div>
             </li>
         {{/each}}
     </div>

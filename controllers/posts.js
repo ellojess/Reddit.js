@@ -5,13 +5,13 @@ const Post =  require('../models/post')
 // Post index
 app.get('/' , (req, res) => {
     console.log("in index")
-    Post.find({})
+    Post.find({}).lean()
     .then(posts => {
-        res.render('posts-index', { posts})
+      res.render("posts-index", { posts });
     })
     .catch(err => {
-        console.log(err.message);
-    })
+      console.log(err.message);
+    });
 });
 
 // NEW
@@ -19,6 +19,29 @@ app.get('/posts/new', (req, res) => {
     console.log("in posts-new")
     return res.render('posts-new', {});
   })
+
+
+// Create
+app.post('/posts/new', (req, res) => {
+    console.log(req.body);
+    
+    const post = new Post(req.body)
+    
+    post.save((err, body) => {
+        return res.redirect(`/`)
+    })
+})
+
+// SUBREDDIT
+app.get("/n/:subreddit", function(req, res) {
+Post.find({ subreddit: req.params.subreddit })
+    .then(posts => {
+    res.render("posts-index", { posts });
+    })
+    .catch(err => {
+    console.log(err);
+    });
+});
 
 // SHOW
 app.get('/posts/:id', (req, res) => {
@@ -31,16 +54,5 @@ app.get('/posts/:id', (req, res) => {
         console.log(err.message);
     })
 })
-
-// Create
-// app.post('/posts/new', (req, res) => {
-//     console.log(req.body);
-    
-//     const post = new Post(req.body)
-    
-//     post.save((err, body) => {
-//         return res.redirect(`/`)
-//     })
-// })
 
 module.exports = app  
