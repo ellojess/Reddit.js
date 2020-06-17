@@ -47,6 +47,7 @@ Post.find({ subreddit: req.params.subreddit })
 app.get('/posts/:id', (req, res) => {
     // Look up the post
     Post.findById(req.params.id)
+    .populate('comments')
     .then(post => {
         res.render('posts-show', { post })
     })
