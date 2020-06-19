@@ -2,9 +2,7 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-
-//get data back from db 
-// const { allowInsecurePrototypeAccess } = require('@handlebars/allow-prototype-access');
+require('dotenv').config();
 
 // get data back from db 
 const handlebars = require('handlebars');
@@ -21,34 +19,19 @@ const database = require('./data/reddit-db')
 // Middleware
 const bodyParser = require('body-parser')
 const expressValidator = require('express-validator')
+const bcrypt = require('bcryptjs')
+var cookieParser = require('cookie-parser');
+const jwt = require('jsonwebtoken');
 
-// Constrollers
+// Controllers
 const posts = require('./controllers/posts.js')
 const comments = require('./controllers/comments.js')
+const auth = require('./controllers/auth.js')
 
-// Models
-const Post = require('./models/post')
-const Comment = require('./models/comment')
-
-// Use "main" as our default layout
-// app.engine('handlebars', exphbs.engine);
-// Use handlebars to render
-// app.set('view engine', 'handlebars');
-
-// Middleware initialization, Use Body Parser
-// app.use(bodyParser.json())
-// app.use(bodyParser.urlencoded({extended: true}))
-// app.use(expressValidator())
-
-// Use "main" as our default layout
-// app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.engine('handlebars', hbs.engine);
 
 // Use handlebars to render
 app.set('view engine', 'handlebars');
-
-// override with POST having ?_method=DELETE or ?_method=PUT
-// app.use(methodOverride('_method'))
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -58,6 +41,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Access controllers & database
 app.use(posts)
 app.use(comments)
+app.use(auth)
 
 // Choose a port to listen on
 const port = process.env.PORT || 3000;

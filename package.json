@@ -7,10 +7,14 @@
   "license": "ISC",
   "dependencies": {
     "@handlebars/allow-prototype-access": "^1.0.3",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.4",
     "express-validator": "^5.3.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.18"
   },
   "devDependencies": {

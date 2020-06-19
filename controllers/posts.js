@@ -32,17 +32,6 @@ app.post('/posts/new', (req, res) => {
     })
 })
 
-// SUBREDDIT
-app.get("/n/:subreddit", function(req, res) {
-Post.find({ subreddit: req.params.subreddit })
-    .then(posts => {
-    res.render("posts-index", { posts });
-    })
-    .catch(err => {
-    console.log(err);
-    });
-});
-
 // SHOW
 app.get('/posts/:id', (req, res) => {
     // Look up the post
@@ -55,5 +44,16 @@ app.get('/posts/:id', (req, res) => {
         console.log(err.message);
     })
 })
+
+// SUBREDDIT
+app.get("/n/:subreddit", function(req, res) {
+    Post.find({ subreddit: req.params.subreddit })
+        .then(posts => {
+        res.render("posts-index", { posts });
+        })
+        .catch(err => {
+        console.log(err);
+        });
+    });
 
 module.exports = app  
