@@ -31,6 +31,7 @@ const jwt = require('jsonwebtoken');
 const posts = require('./controllers/posts.js')
 const comments = require('./controllers/comments.js')
 const auth = require('./controllers/auth.js')
+const replies = require('./controllers/replies.js')
 
 app.engine('handlebars', hbs.engine);
 
