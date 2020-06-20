@@ -3,16 +3,17 @@ const Post =  require('../models/post')
 
 
 // Post index
-app.get('/' , (req, res) => {
-    console.log("in index")
-    Post.find({}).lean()
-    .then(posts => {
-      res.render("posts-index", { posts });
-    })
-    .catch(err => {
-      console.log(err.message);
-    });
-});
+app.get("/", (req, res) => {
+    var currentUser = req.user;
+  
+    Post.find({})
+      .then(posts => {
+        res.render("posts-index", { posts, currentUser });
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
+  });
 
 // NEW
 app.get('/posts/new', (req, res) => {
@@ -21,16 +22,18 @@ app.get('/posts/new', (req, res) => {
   })
 
 
-// Create
-app.post('/posts/new', (req, res) => {
-    console.log(req.body);
-    
-    const post = new Post(req.body)
-    
-    post.save((err, body) => {
-        return res.redirect(`/`)
-    })
-})
+// CREATE
+app.post("/posts/new", (req, res) => {
+    if (req.user) {
+      var post = new Post(req.body);
+  
+      post.save(function(err, post) {
+        return res.redirect(`/`);
+      });
+    } else {
+      return res.status(401); // UNAUTHORIZED
+    }
+  });
 
 // SHOW
 app.get('/posts/:id', (req, res) => {

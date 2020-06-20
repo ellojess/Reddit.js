@@ -13,6 +13,10 @@ const hbs = exphbs.create({
     handlebars: allowInsecurePrototypeAccess(handlebars),
 });
 
+// Models
+const Post = require('./models/post')
+const Comment = require('./models/comment')
+
 // Database
 const database = require('./data/reddit-db')
 
@@ -36,13 +40,26 @@ app.set('view engine', 'handlebars');
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-
+app.use(expressValidator())
 
 // Access controllers & database
 app.use(posts)
 app.use(comments)
 app.use(auth)
 
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    req.user = null;
+  } else {
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    req.user = decodedToken.payload;
+  }
+
+  next();
+};
+app.use(checkAuth);
 // Choose a port to listen on
 const port = process.env.PORT || 3000;
 
