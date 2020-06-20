@@ -5,7 +5,8 @@ const Comment = require('../models/comment')
 // Create comment
 app.post('/posts/:postId/comments', function (req, res) {
     // Instantiate instance of model
-    const comment  = new Comment(req.body)
+    const comment = new Comment(req.body);
+    comment.author = req.user._id;
 
     // Save instance of Comment model to DB
     comment
