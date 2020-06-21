@@ -47,6 +47,7 @@ app.use(expressValidator())
 app.use(posts)
 app.use(comments)
 app.use(auth)
+app.use(express.static('public'));
 
 var checkAuth = (req, res, next) => {
   console.log("Checking authentication");
