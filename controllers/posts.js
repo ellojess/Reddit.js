@@ -19,8 +19,9 @@ app.get('/', (req, res) => {
 
 // NEW
 app.get('/posts/new', (req, res) => {
+    var currentUser = req.user;
     console.log("in posts-new")
-    return res.render('posts-new', {});
+    return res.render('posts-new', {currentUser});
   })
 
 

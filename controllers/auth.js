@@ -32,6 +32,11 @@ app.post("/sign-up", (req, res) => {
     res.redirect('/');
   });
 
+ // LOGIN FORM
+ app.get('/login', (req, res) => {
+  res.render('login');
+});
+
 // LOGIN
 app.post("/login", (req, res) => {
   const username = req.body.username;
