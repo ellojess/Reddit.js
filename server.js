@@ -38,10 +38,34 @@ app.engine('handlebars', hbs.engine);
 // Use handlebars to render
 app.set('view engine', 'handlebars');
 
+var checkAuth = (req, res, next) => {
+  console.log("Checking authentication");
+
+
+
+  // if (typeof req.cookies === "undefined" || typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+    if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
+      console.log("cookie is undefined")
+    req.user = null;
+  } else {
+    console.log("cookie is defined")
+
+    var token = req.cookies.nToken;
+    var decodedToken = jwt.decode(token, { complete: true }) || {};
+    console.log(decodedToken.payload)
+    req.user = decodedToken.payload;
+  }
+
+  next();
+};
+
+app.use(cookieParser())
+
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressValidator())
+app.use(checkAuth);
 
 // Access controllers & database
 app.use(posts)
@@ -49,19 +73,6 @@ app.use(comments)
 app.use(auth)
 app.use(express.static('public'));
 
-var checkAuth = (req, res, next) => {
-  console.log("Checking authentication");
-  if (typeof req.cookies.nToken === "undefined" || req.cookies.nToken === null) {
-    req.user = null;
-  } else {
-    var token = req.cookies.nToken;
-    var decodedToken = jwt.decode(token, { complete: true }) || {};
-    req.user = decodedToken.payload;
-  }
-
-  next();
-};
-app.use(checkAuth);
 // Choose a port to listen on
 const port = process.env.PORT || 3000;
 

@@ -1,14 +1,15 @@
 <div class="row">
     <div class="col-sm-4 col-sm-offset-4">
-        <form action="/sign-up">
+        <form action="/sign-up" method="post">
             <h4>Sign Up</h4>
             <div class="form-group">
-                <label for="">Username</label>
-                <input type="username" class="form-control" placeholder="Username">
+                <label for="username">Username</label>
+                {{!-- <input type="username" class="form-control" placeholder="Username"> --}}
+                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
             </div>
             <div class="form-group">
-                <label for="">password</label>
-                <input type="password" class="form-control" placeholder="Password">
+                <label for="password">password</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="Password">
             </div>
             <div class="text-right">
                 <button type="submit" class="btn btn-primary">Create User</button>

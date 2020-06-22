@@ -7,7 +7,10 @@ const User = require('../models/user');
 app.get('/', (req, res) => {
     var currentUser = req.user;
     // res.render('home', {});
-    console.log(req.cookies);
+    // console.log(`Cookies: ${req.cookies}`)
+    // console.log(req.cookies);
+    // console.log(currentUser.username)
+    console.log("at index__")
     Post.find().populate('author')
     .then(posts => {
         res.render('posts-index', { posts, currentUser });
