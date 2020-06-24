@@ -13,6 +13,7 @@ app.get('/', (req, res) => {
     console.log("at index__")
     Post.find().populate('author')
     .then(posts => {
+        console.log(posts)
         res.render('posts-index', { posts, currentUser });
         // res.render('home', {});
     }).catch(err => {
